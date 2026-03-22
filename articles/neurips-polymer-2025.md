@@ -3,7 +3,7 @@ title: "NeurIPS Polymer 2025 上位解法の追試してみた話"
 emoji: "🧪"
 type: "tech"
 topics: ["kaggle", "machinelearning", "python", "chemistry", "neurips"]
-published: false
+published: true
 ---
 
 ## はじめに
