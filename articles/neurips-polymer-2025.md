@@ -1,5 +1,5 @@
 ---
-title: "NeurIPS Polymer 2025 1位解法の追試で8位相当を達成した話"
+title: "NeurIPS Polymer 2025 1位解法の追試してみた話"
 emoji: "🧪"
 type: "tech"
 topics: ["kaggle", "machinelearning", "python", "chemistry", "neurips"]
@@ -8,11 +8,15 @@ published: false
 
 ## はじめに
 
-NeurIPS - Open Polymer Prediction 2025は、ポリマーの化学構造（SMILES）から5つの物性値を予測するKaggleコンペティションです。2,240チームが参加し、賞金総額$50,000。
+NeurIPS - Open Polymer Prediction 2025は、ポリマーの化学構造（SMILES）から5つの物性値を予測するKaggleコンペティションです。2,000チームくらいが参加したコンペとのことでした。
 
-コンペ終了後に1位のJames Day氏のwriteupを読み、その解法を追試（reproduction）しました。結果、Late Submissionで**Private LB 0.08180**を達成。これは2,240チーム中**実質8位相当**のスコアです。
+自分もバックグラウンドに(一応)化学周りの知識があるため、終了後ではありますが1位の解法を読み解いてなんとか追試できないか試してみました。
+具体的には特に1位のJames Day氏のwriteupを読み、その解法を追試（reproduction）しました。結果、Late Submissionで**Private LB 0.08180**を達成。これは2,240チーム中**実質8位相当**のスコア...のはずです。
 
-> **注意:** この記事は1位解法の再現実験です。解法の設計は全てJames Day氏の功績です。目的は再現性の検証と、動くコードベースをコミュニティに提供することです。
+> **注意:** この記事は1位解法の縮小版の再現実験です。解法の設計は全てJames Day氏の功績です。目的は再現性の検証です。
+
+1位の方の解法はこちら:
+[James Day's 1st Place Solution Writeup](https://www.kaggle.com/competitions/neurips-open-polymer-prediction-2025/writeups/1st-place-solution)
 
 **リポジトリ:** [GitHub - NeurIP2025_mytrial_following_1st_solution](https://github.com/nkwork9999/NeurIP2025_mytrial_following_1st_solution)
 
@@ -49,22 +53,22 @@ weighted Mean Absolute Error（wMAE）。各物性の値域で正規化し、サ
 3. **Uni-Mol 2** — 分子3D構造を考慮した事前学習モデル
 
 最も意外だったのは、**コード用に事前学習されたModernBERT-baseが、化学特化モデルを上回った**という点です。SMILESは見た目がプログラミングコードに似ており（括弧、記号、繰り返しパターン）、コード用モデルのトークナイザーがSMILESの構造をうまく捉えるようです。
+これは言及されているまま書いていますが本当に面白いと思います。SMILESは文字列であるが故大規模言語モデルの恩恵を受けられるのはわかりますがコード用モデルが優位とは...という感じですね。
 
 ### 2位・3位の知見
 
 - **2位 Ezra氏:** Tgの単位を摂氏から華氏に変換するだけでスコアが激変。ExtraTreesRegressorというシンプルなモデルで高順位
 - **3位 hongyu Guo氏:** GATv2Conv（6層）+ Morgan fingerprint。線形回帰によるポストホック校正
 
-## 再現コードの設計判断
+## 再現コードの設計(上位を参考にした自分の実装です)
 
 ### なぜCodeBERTa-small？
 
 1位は`ModernBERT-base`（125Mパラメータ）を使っていましたが、追試では**CodeBERTa-small**（84Mパラメータ）を使いました。
 
 理由:
-- Google Colabの無料枠（L4 GPU）で7時間以内に学習を完了させたかった
-- 「コード用モデルがSMILESに効く」という仮説の検証には最小モデルで十分
-- 結果的に、最小モデルでも1位の90%の性能が出ることがわかった
+- Google Colabの（L4 GPU）で7時間以内に学習を完了させたかった
+- とりあえず手軽に試したかった。
 
 ### パイプライン構成
 
@@ -92,6 +96,7 @@ SMILES → RDKit特徴量 → AutoGluon → 5物性値
 ```
 
 RDKitの`MolToSmiles(mol, canonical=False, doRandom=True)`を使うと、ランダムなSMILES表記を生成できます。
+画像でいうところのノイズを混ぜるというような感じなんでしょうか？ランダムな表記を生成させると関係ないものまで巻き込んでしまう気もするのですがうまくいくようです。
 
 ### 学習時
 
@@ -129,9 +134,9 @@ def predict_tta(model, tokenizer, smiles_list, n_tta=30):
 
 ## Tg分布シフト後処理
 
-1位解法のもう一つの重要なテクニックが、Tg（ガラス転移温度）の分布シフト補正です。
+もう一つの重要なテクニックが、Tg（ガラス転移温度）の分布シフト補正です。
 
-trainとtestのTg分布にシフトがあることが知られており、予測後に`std × 0.5644`を加算することでスコアが改善します。
+trainとtestのTg分布にシフトがあることが知られており、予測後に`std × 0.5644`を加算することでスコアが改善します...これは非常にアナログな方法ですがかなり有効だったそうです。
 
 ```python
 tg_std = submission['Tg'].std()
@@ -153,9 +158,9 @@ for target in TARGETS:
             submission.loc[submission['id'] == row['id'], target] = match.values[0]
 ```
 
-## Colab rdkitインストール地獄
+## Colab rdkitインストールについて
 
-追試で最も苦労したのは、実はモデルではなく**環境構築**でした。
+rdkitの部分で少し苦労しました。
 
 Google Colab上でrdkitをインストールすると、pandas/numpyのバージョン不整合が発生します。
 
@@ -186,55 +191,12 @@ Late Submissionで**Private LB 0.08180**を達成しました。
 | → | **この追試** | **0.08180** |
 | 8位 | Dmitry Uarov | 0.08271 |
 
-### アンサンブル重み
 
-```
-Tg:      w_bert=0.97  → BERTがほぼ全て
-FFV:     w_bert=0.94
-Tc:      w_bert=0.91
-Density: w_bert=0.95
-Rg:      w_bert=0.93
-```
-
-AutoGluonの寄与はほとんどありませんでした（w_bert > 0.91）。CodeBERTa単体でほぼ8位相当の性能が出ています。
 
 ## 1位との差分と改善余地
+Uni-Mol 2という3D?を用いた手法は再現不可能でした。手元に関連のソフトがないのと計算資源もなさそうなので断念しました。このあたり3Dデータを軽く扱える方法があれば良いとおもいました。
 
-| 要素 | 1位 | この追試 |
-|------|-----|----------|
-| 言語モデル | CodeBERT (125M) | CodeBERTa-small (84M) |
-| アンサンブル | BERT + AutoGluon + Uni-Mol 2 | BERT + AutoGluon |
-| 疑似ラベル | あり | なし |
-| Tg後処理 | あり | あり |
-| スコア | 0.07536 | 0.08180 |
 
-### 改善すれば届きそうなポイント
-
-| 施策 | 推定改善 |
-|------|---------|
-| CodeBERT (125M) に変更 | -0.002〜0.005 |
-| CatBoost追加 | -0.001〜0.002 |
-| 疑似ラベル事前学習 | -0.004 |
-| TTA 30→50 | -0.001 |
-| 2位のTg華氏変換トリック | -0.01+ |
-
-## 学び
-
-### 1. コード用モデルがSMILESに効く
-
-これが最大の発見です。化学特化のモデルを使わなくても、コード用に事前学習されたモデルでSMILES回帰ができる。SMILESの構造（括弧のネスト、記号の規則性）がプログラミング言語に類似しているためと考えられます。
-
-### 2. Random SMILES拡張は強力
-
-学習データ10倍拡張 + TTA30回のmedian集約は、モデル変更よりも効果が大きい可能性があります。SMILESの非一意性を逆手に取った、化学ML特有のテクニックです。
-
-### 3. 最小モデルで十分な性能
-
-84Mパラメータの最小モデルで、1位の90%の性能が出ます。計算リソースの制約がある場合でも、上位に食い込む手法が構築可能です。
-
-### 4. 後処理の重要性
-
-Tg分布シフト補正とDirect Matchは、モデルを一切変えずにスコアを改善するテクニックです。コンペでは最後の一押しが順位を分けるため、こうした後処理の工夫が重要です。
 
 ## おわりに
 
