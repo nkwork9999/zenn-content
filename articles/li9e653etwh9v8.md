@@ -99,6 +99,14 @@ LOAD pic2vec;
 INSTALL httpfs; LOAD httpfs;   -- 公開画像URLを直接掴むため
 ```
 
+:::message
+**バンドルモデルの自動ロードについて補足**
+
+`LOAD pic2vec` 直後に `SELECT pic_list_models();` を打つと `No models loaded` と返ってきますが、これは故障ではなく仕様です。バンドル済みのEUPE ViT-T/16 は **拡張をロードした瞬間ではなく、最初に `pic_embed()` / `pic_embed_blob()` などを呼んだタイミングで遅延ロード** されます。最初の embedding 呼び出しが完了したあとにもう一度 `pic_list_models()` を打つと、`Loaded models (1):  - tiny` が見えます。
+
+なお、内部登録名は `tiny` です（モデルのアーキテクチャ名 `eupe` ではありません）。後でモデルを差し替えたいときに `pic_unload_model('eupe')` と打つと `Model not found: eupe` で失敗するので、`pic_unload_model('tiny')` と指定してください。
+:::
+
 ## 1. 画像をベクトルにする
 
 公開URLの画像を直接ベクトル化する。
