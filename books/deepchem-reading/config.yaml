@@ -1,0 +1,16 @@
+title: "DeepChem を読む — 化学・生命科学の機械学習パイプラインを公式チュートリアル経由で1章ずつ動かす"
+summary: |
+  化学・生命科学向けの定番 OSS フレームワーク DeepChem
+  (Ramsundar et al., MIT License) の公式チュートリアル (全 73 章) を、
+  1 章ずつコードを動かしながらソースコードレベルまで読み解く学習ノート。
+
+  ケモインフォマティクス・マテリアルズインフォマティクスに足を踏み入れたい
+  学生・研究者・エンジニア向けに、SMILES からグラフニューラルネット (GNN)・
+  メッセージパッシング (MPNN)・Transformer 系 (ChemBERTa) まで、
+  化学 ML 論文の参照実装が並ぶ DeepChem の前処理パイプラインと
+  モデル群の中身を読み解いていきます。
+topics: ["python", "機械学習", "ディープラーニング", "化学", "ケモインフォマティクス"]
+published: false
+price: 0
+chapters:
+  - basic-tools
