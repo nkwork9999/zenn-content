@@ -8,5 +8,5 @@ topics: ["python", "machinelearning", "numpy", "ai", "chemistry"]
 published: true
 price: 0
 chapters:
-  - 1.tensors-and-shapes
-# Ch2 (2.intro-to-ml) は来週仕上げ予定、 公開時にここに追加
+  - tensors-and-shapes
+# Ch2 (intro-to-ml) は来週仕上げ予定、 公開時にここに追加

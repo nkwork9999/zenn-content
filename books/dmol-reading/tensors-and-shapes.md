@@ -1,9 +1,6 @@
 ---
-title: "dmol-book Ch1 を読む — 行列操作"
-emoji: "🧪"
-type: "tech"
-topics: ["machinelearning", "chemistry", "numpy", "dmol"]
-published: false
+title: "Ch1: Tensors and Shapes — テンソル操作の言語"
+free: true
 ---
 
 
