@@ -1,0 +1,12 @@
+title: "dmol-book を読む — 化学・材料系のための深層学習"
+summary: |
+  Andrew White の公開教科書 dmol-book (Deep Learning for Molecules and Materials) を
+  1章ずつ実機で動かしながら読み解いていく学習ノート。
+  化学・材料データに ML/DL を適用する基礎から、GNN・等変NN・拡散モデルまで扱う原典を
+  日本語で噛み砕いて、初学者にも追えるよう実機検証付きで記録する。
+topics: ["python", "machinelearning", "numpy", "ai", "chemistry"]
+published: true
+price: 0
+chapters:
+  - 1.tensors-and-shapes
+# Ch2 (2.intro-to-ml) は来週仕上げ予定、 公開時にここに追加
