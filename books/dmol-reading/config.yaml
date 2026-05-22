@@ -13,4 +13,4 @@ published: true
 price: 0
 chapters:
   - tensors-and-shapes
-# Ch2 (intro-to-ml) は来週仕上げ予定、 公開時にここに追加
+  - intro-to-ml
