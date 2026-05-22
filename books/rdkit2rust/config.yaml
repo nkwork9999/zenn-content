@@ -1,0 +1,21 @@
+title: "RDKit の実装を読みながら Rust + DuckDB で化学データ用のツールを作っていく"
+summary: |
+  ケモインフォマティクスの定番ライブラリ RDKit (C++ + Python, BSD 3-Clause) の
+  実装を 1 機能ずつ読み解き、Rust + DuckDB extension として再構成していく
+  実装日記シリーズ。
+
+  各回は「読む (RDKit のソース) → 考える (Rust + SQL 流儀での設計判断)
+  → 作る (ducksmiles に組み込み)」の3ステップ構成。
+  単純な 1:1 移植ではなく、Rust エコシステムや DuckDB の SQL 流儀に
+  合わない部分は再設計し、RDKit にない機能 (DuckDB 並列バッチ、SQL から
+  自然に呼べる API) も含めて拡張していく。
+
+  対象は化学データを扱う データエンジニア・ML エンジニア・ケモインフォマ
+  ティクス研究者で、DuckDB と Rust それぞれの基礎は前提とする。
+  各章末で RDKit Python 実装との数値比較を行い、移植の正確さも検証する。
+topics: ["duckdb", "rust", "rdkit", "chemistry", "cheminformatics"]
+published: true
+price: 0
+chapters:
+  - 01-wildman-crippen-logp
+  - 02-morgan-ecfp
