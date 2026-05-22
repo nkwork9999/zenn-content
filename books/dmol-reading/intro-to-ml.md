@@ -433,5 +433,4 @@ Ch2 の旅程を 1 行で:
 - AqSolDB 論文: https://doi.org/10.1038/s41597-019-0151-1
 - AqSolDB 本家リポジトリ: https://github.com/mcsorkun/AqSolDB
 - 本記事のソース (公式 dmol-book): [ml/introduction.ipynb](https://github.com/whitead/dmol-book/blob/main/ml/introduction.ipynb)
-- 前章: [Ch1 Tensors and Shapes](https://zenn.dev/nkwork9999/articles/dmol-01-tensors-and-shapes)
-- 次章: [Ch3 Regression & Model Assessment](https://zenn.dev/nkwork9999/articles/dmol-03-regression)
+- 前章: [Ch1 Tensors and Shapes](https://zenn.dev/nkwork9999/books/dmol-reading/viewer/tensors-and-shapes)
