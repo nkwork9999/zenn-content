@@ -14,7 +14,7 @@ summary: |
   ティクス研究者で、DuckDB と Rust それぞれの基礎は前提とする。
   各章末で RDKit Python 実装との数値比較を行い、移植の正確さも検証する。
 topics: ["duckdb", "rust", "rdkit", "chemistry", "cheminformatics"]
-published: true
+published: false
 price: 0
 chapters:
   - 01-wildman-crippen-logp
