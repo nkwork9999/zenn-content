@@ -3,6 +3,10 @@ title: "Ch2: Introduction to Machine Learning — Delaney溶解度で線形回�
 free: true
 ---
 
+:::message
+本章は [CC BY-NC 3.0](https://creativecommons.org/licenses/by-nc/3.0/) で公開されている [dmol-book](https://dmol.pub/) (Andrew White, "Deep Learning for Molecules and Materials") を題材にした学習ノートです。本章の二次著作物部分も同じく CC BY-NC 3.0 で公開します。
+:::
+
 
 # アイデア
 
