@@ -1,5 +1,5 @@
 ---
-title: "Ch3: Regression & Model Assessment — 過学習・正則化・Scaffold Split で線形回帰を本気で評価する"
+title: "Ch3: Regression & Assessment — 過学習・正則化・Scaffold Split"
 free: true
 ---
 
